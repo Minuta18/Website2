@@ -1,0 +1,17 @@
+.title{
+    padding: 20px, auto, 0px, auto;
+    font-size: 100px;
+    color: #999999;
+    background: #EEAA44
+}
+
+.login_linc{
+    padding: 50px, auto, 0px, auto;
+    font-size: 60px ;
+    color: #999999;
+    background: #EEAA44
+}
+
+body{
+  background: #DDDD88
+}
