@@ -11,8 +11,9 @@ def base(request):
   
   return render(request, 'silsite/base.html')
 
+
 def login(request):
-  '''Страница входа'''
+  """Страница входа"""
   text = ''
   form = LoginForm(data=(request.POST or None))
   if request.method == 'POST':
@@ -21,7 +22,7 @@ def login(request):
       password = form.cleaned_data['password']
       user = authenticate(username=username, password=password)
       if user is not None:
-        if user.is_active: # TODO: Зачем? #Нужно. # Ок
+        if user.is_active:
           auth.login(request, user)
           return redirect('/')
         else:
