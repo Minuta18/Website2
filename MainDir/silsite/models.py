@@ -12,4 +12,4 @@ class Video(models.Model):
   '''Видео'''
   video_wishes = models.CharField(max_length=127) # Пожелания для видео
   video = models.FileField(upload_to='./../videos/') # Видео
-  project = models.ForeignKey(Project, on_delete=models.CASCADE, primary_key=True) # Проект
+  project = models.OneToOneField(Project, on_delete=models.CASCADE, primary_key=True) # Проект

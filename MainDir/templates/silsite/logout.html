@@ -1,0 +1,8 @@
+{% extends 'silsite/base.html' %}
+
+{% block content %}
+    <h1>User {{ username }}, do you really want to logout?</h1>
+    <form method = 'POST'>{% csrf_token %}
+        <input type = 'submit' name = 'Yes' value = 'Yes'> <input type = 'submit' name = 'No' value = 'No'>
+    </form>
+{% endblock %}
