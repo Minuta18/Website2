@@ -11,6 +11,8 @@
         </div>  
         <div class='login_linc'>
             <a href = "{% url 'login' %}">Login</a>
+            {% block content %}
+            {% endblock %}
         </div>
     </body>
 </html>
