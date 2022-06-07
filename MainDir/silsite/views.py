@@ -1,19 +1,17 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate
 from django.contrib import auth
-from django.contrib.auth import get_user
 from .forms import LoginForm
 from django.contrib.auth.decorators import login_required
 
 
 @login_required(redirect_field_name='')
-def base(request):
-  
-  return render(request, 'silsite/base.html')
+def base2(request):
+  return render(request, 'silsite/base2.html')
 
 def login(request):
   '''Страница входа'''
-  text = ''
+  text = 'Sorry, but you have to log in before using site'
   form = LoginForm(data=(request.POST or None))
   if request.method == 'POST':
     if form.is_valid():
@@ -21,9 +19,9 @@ def login(request):
       password = form.cleaned_data['password']
       user = authenticate(username=username, password=password)
       if user is not None:
-        if user.is_active: # TODO: Зачем? #Нужно. # Ок
+        if user.is_active:
           auth.login(request, user)
-          return redirect('/')
+          return redirect('base')
         else:
           form = LoginForm()
           text = 'Sorry, but your account is inactive.'
@@ -32,5 +30,23 @@ def login(request):
         text = 'Invalid username or password.'
     else:
       form = LoginForm()
-      text = 'Please, fill the form.'
+      text = 'Invalid username or password.'
+  else:
+    form = LoginForm()
+    text = 'Please, fill the form'
   return render(request, 'silsite/login.html', {'form': form, 'text': text})
+
+def logout(request):
+  if (request.method == 'POST'):
+    val = ''
+    try:
+      val = request.POST.get('Yes')
+    except:
+      val = 'No'
+    if (val == 'Yes'):
+      auth.logout(request)
+      return redirect('login')
+    else:
+      return redirect('base')
+  else:
+    return render(request, 'silsite/logout.html', {'username': request.user.username})
