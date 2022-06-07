@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <!-- Оставляю место дизайнерам -->
+    </head>
+    <body>
+        <h1>New project</h1>
+        <form enctype="multipart/form-data" method='POST'>{% csrf_token %}
+            {{ form.as_p }}
+            <input type='file', name='presentation'>
+            <input type='submit'>
+        </form>
+    </body>
+</html>

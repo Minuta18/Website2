@@ -4,11 +4,13 @@ from django.contrib import auth
 from django.contrib.auth import get_user
 from .forms import LoginForm
 from django.contrib.auth.decorators import login_required
-
+from .forms import ProjectForm
+from django.http import Http404
+from .models import Project
+from base64 import decode
 
 @login_required(redirect_field_name='')
 def base(request):
-  
   return render(request, 'silsite/base.html')
 
 def login(request):
@@ -34,3 +36,25 @@ def login(request):
       form = LoginForm()
       text = 'Please, fill the form.'
   return render(request, 'silsite/login.html', {'form': form, 'text': text})
+
+def new_project(request):
+  form = ProjectForm()
+  if request.method == 'POST':
+    form = ProjectForm(data = request.POST)
+    if form.is_valid():
+      prj = form.save()
+      prj.presentation = request.FILES['presentation']
+      prj.save()
+      print('Project created')
+      return redirect('/')
+    else:
+      form = ProjectForm()
+      print("Project don't created")
+  return render(request, 'silsite/new_project.html', {'form': form})
+
+def project_view(request, name):
+  try:
+    project = Project.objects.filter(name=decode(name))
+  except Project.DoesNotExist:
+    return render(request, 'silsite/error_404.html')
+  return render(request, 'silsite/project.html', {'project': project})
