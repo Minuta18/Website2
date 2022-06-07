@@ -7,11 +7,11 @@ from django.contrib.auth.decorators import login_required
 from .forms import ProjectForm
 from django.http import Http404
 from .models import Project
-from base64 import decode
+from base64 import b64decode
 
 @login_required(redirect_field_name='')
-def base(request):
-  return render(request, 'silsite/base.html')
+def base2(request):
+  return render(request, 'silsite/base2.html')
 
 def login(request):
   '''Страница входа'''
@@ -54,7 +54,22 @@ def new_project(request):
 
 def project_view(request, name):
   try:
-    project = Project.objects.filter(name=decode(name))
+    project = Project.objects.filter(name=b64decode(name))
   except Project.DoesNotExist:
     return render(request, 'silsite/error_404.html')
   return render(request, 'silsite/project.html', {'project': project})
+
+def logout(request):
+  if (request.method == 'POST'):
+    val = ''
+    try:
+      val = request.POST.get('Yes')
+    except:
+      val = 'No'
+    if (val == 'Yes'):
+      auth.logout(request)
+      return redirect('login')
+    else:
+      return redirect('base')
+  else:
+    return render(request, 'silsite/logout.html', {'username': request.user.username})
