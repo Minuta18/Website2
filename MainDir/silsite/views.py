@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate
 from django.contrib import auth
 from .forms import LoginForm
 from django.contrib.auth.decorators import login_required
+from .models import Project
+from base64 import decode
 
 
 @login_required(redirect_field_name='')
@@ -36,9 +38,10 @@ def login(request):
 
 
 def projects_view(request):
-    projects = None
+    projects = Project.objects.filter()
     return render(request, 'silsite/projects.html', {'projects': projects})
 
 
 def project_view(request, name):
-    return render(request, 'silsite/project.html', {'name': name})
+    projects = Project.objects.filter()
+    return render(request, 'silsite/project.html', {'name': name, 'projects': projects})

@@ -1,8 +1,12 @@
 {% extends 'silsite/base.html' %}
 
 {% block content %}
-    <div class="project">
-        <a href="project.html">{{ project.name }}</a>
-        <p>{{ project.short_text }}</p>
-    </div>
+    {% for project in projects %}
+        {% if name == project.name %}
+            <h1>{{ project.name }}</h1>
+            <p>{{ project.text }}</p>
+            <p>{{ project.teacher }}</p>
+            <picture>{{ project.presentation }}</picture>
+        {% endif %}
+    {% endfor %}
 {% endblock %}

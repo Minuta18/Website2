@@ -7,12 +7,9 @@
     </head>
     <body>
         <div class='title'>
-            <h1><a href = "">Silaeder conf</a></h1>
+            <h2><a href = "">Silaeder conf</a></h2>
         </div>  
-        <div class='login_linc'>
-            <a href = "{% url 'login' %}">Login</a>
-            {% block content %}
-            {% endblock %}
-        </div>
+        {% block content %}
+        {% endblock %}
     </body>
 </html>
