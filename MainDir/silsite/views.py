@@ -52,9 +52,13 @@ def new_project(request):
       print("Project don't created")
   return render(request, 'silsite/new_project.html', {'form': form})
 
+def projects_view(request):
+    projects = Project.objects.all()
+    return render(request, 'silsite/projects.html', {'projects': projects})
+
 def project_view(request, name):
   try:
-    project = Project.objects.filter(name=b64decode(name))
+    project = Project.objects.filter(name=name)[0]
   except Project.DoesNotExist:
     return render(request, 'silsite/error_404.html')
   return render(request, 'silsite/project.html', {'project': project})
