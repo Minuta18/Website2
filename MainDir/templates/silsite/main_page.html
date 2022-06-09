@@ -1,16 +1,13 @@
 {% extends 'silsite/base.html' %}
 
 {% block content %}
-  <a href = "{% url 'logout' %}"><button id = 'my_buttons'>Logout</button></a>
-  <a href = "{% url 'new_project' %}"><button id = 'my_buttons'>New project</button></a>
-  <a href = "{% url 'projects' %}"><button id = 'my_buttons'>My projects</button></a>
-  {% if projects %}
+    <a href = "{% url 'logout' %}"><button id = 'my_buttons'>Logout</button></a>
+    <a href = "{% url 'new_project' %}"><button id = 'my_buttons'>New project</button></a>
+    <a href = "{% url 'projects' %}"><button id = 'my_buttons'>My projects</button></a>
+    {% if projects %}
         {% for project in projects %}
             <h2><a href="projects/project/{{ project.name }}/">{{ project.name }}</a></h2>
-            {% if project.teacher == user %}
-                <h3><a href="projects/project/{{ project.name }}/edit/">edit</a></h3>
-                <h3><a href="projects/project/{{ project.name }}/delete/">delete</a></h3>
-            {% endif %}
+            <h3><a href="/user/{{ project.teacher}}/">{{ project.teacher.username }}</a></h3>
         {% endfor %}
     {% else %}
         <p> No projects </p>

@@ -13,5 +13,4 @@ class Video(models.Model):
   '''Видео'''
   video_wishes = models.CharField(max_length=127) # Пожелания для видео
   video = models.TextField() # Видео
-  project = models.ForeignKey(Project, on_delete=models.CASCADE, primary_key=True) # Проект
-  
+  project = models.ForeignKey(Project, on_delete=models.CASCADE) # Проект

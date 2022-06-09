@@ -1,0 +1,14 @@
+{% extends 'silsite/base.html' %}
+
+{% block content %}
+    <h2> {{ User.username }} </h2>
+    <h3> {{ User.email }} </h3>
+    <p><h4> Projects </h4></p>
+    {% if projects %}
+        {% for project in projects %}
+            <h5><a href="/projects/project/{{ project.name }}">{{ project.name }}</a></h5>
+        {% endfor %}
+    {% else %}
+        <p> No projects </p>
+    {% endif %}
+{% endblock %}

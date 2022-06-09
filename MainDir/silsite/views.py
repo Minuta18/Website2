@@ -1,3 +1,4 @@
+from ast import Continue
 from tokenize import Name
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate
@@ -11,6 +12,8 @@ from django.http import Http404
 from .models import Project
 from .models import Video
 from base64 import b64decode, b64encode
+from django.db.models import Max
+from django.contrib.auth.models import User
 
 @login_required(redirect_field_name='')
 def main_page(request):
@@ -72,6 +75,13 @@ def project_view(request, name):
     project = Project.objects.filter(name = name)[0]
   except Project.DoesNotExist:
     return render(request, 'silsite/error_404.html')
+  if request.method == 'POST':
+    for i in request.POST:
+      try:
+        vid = Video.objects.filter(id=int(i))
+        vid.delete()
+      except ValueError:
+        pass
   return render(request, 'silsite/project_view.html', {
     'project': project, 
     'username': request.user.username,
@@ -124,6 +134,8 @@ def delete_project(request, name):
   if (request.method == 'POST'): 
     if request.POST.get('Yes') != None:
       prj = Project.objects.filter(name=name)
+      for video in Video.objects.filter(project__in=prj):
+        video.delete()
       prj.delete()
     return redirect('projects')
   else:
@@ -135,9 +147,16 @@ def add_video(request, name):
     if form.is_valid():
       video_wishes = form.cleaned_data['video_wishes']
       video = form.cleaned_data['video']
-      vd = Video(video_wishes=video_wishes, video=video, project=Project.objects.filter(name=name)[0])
+      vd = Video(video_wishes=video_wishes, video=video, id=(0 if Video.objects.aggregate(Max('id'))['id__max'] == None else Video.objects.aggregate(Max('id'))['id__max'] + 1), project=Project.objects.filter(name=name)[0])
       vd.save()
       return redirect(f'/projects/project/{name}/')
     else:
       form = VideoForm()
-  return render(request, 'silsite/login.html', {'form': form})
+  return render(request, 'silsite/add_video.html', {'form': form})
+
+def user_view(request, name):
+  projects = Project.objects.filter(teacher__in=User.objects.filter(username=name))
+  return render(request, 'silsite/user_view.html', {
+    'User': User.objects.filter(username=name)[0],
+    'projects': projects  
+  })
