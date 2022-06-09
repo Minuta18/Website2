@@ -1,12 +1,6 @@
-<!DOCTYPE html>
+{% extends 'silsite/base.html' %}
 
-<html>
-    <head>
-        <title>404</title>
-    </head>
-    <body>
-        <h1><strong>Error 404</strong></h1>
-        <p>Page not found.</p>
-        <a href="base.html">Visit our main page</a>
-    </body>
-</html>
+{% block content %}
+    <h1><strong>Error 404</strong></h1>
+    <p>Page not found.</p>
+{% endblock %}

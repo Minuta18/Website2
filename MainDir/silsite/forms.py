@@ -15,4 +15,4 @@ class ProjectForm(ModelForm):
   '''Форма создания нового проекта'''
   class Meta:
     model = Project
-    fields = ['name', 'short_text', 'text', 'teacher']
+    fields = ['name']
