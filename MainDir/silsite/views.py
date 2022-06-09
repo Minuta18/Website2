@@ -1,3 +1,4 @@
+from tokenize import Name
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate
 from django.contrib import auth
@@ -5,13 +6,15 @@ from django.contrib.auth import get_user
 from .forms import LoginForm
 from django.contrib.auth.decorators import login_required
 from .forms import ProjectForm
+from .forms import VideoForm
 from django.http import Http404
 from .models import Project
+from .models import Video
 from base64 import b64decode, b64encode
 
 @login_required(redirect_field_name='')
 def main_page(request):
-  return render(request, 'silsite/main_page.html')
+  return render(request, 'silsite/main_page.html', {'projects': Project.objects.all(), 'user': request.user})
 
 def login(request):
   '''Страница входа'''
@@ -60,7 +63,7 @@ def new_project(request):
   return render(request, 'silsite/new_project.html', {'form': form})
 
 def projects_view(request):
-    projects = Project.objects.all()
+    projects = Project.objects.filter(teacher=request.user)
     return render(request, 'silsite/projects.html', {'projects': projects})
 
 def project_view(request, name):
@@ -69,18 +72,20 @@ def project_view(request, name):
     project = Project.objects.filter(name = name)[0]
   except Project.DoesNotExist:
     return render(request, 'silsite/error_404.html')
-  return render(request, 'silsite/project_view.html', {'project': project, 'username': request.user.username})
+  return render(request, 'silsite/project_view.html', {
+    'project': project, 
+    'username': request.user.username,
+    'short_text_name': project.short_text,
+    'text_name': project.text,
+    'presentation_name': project.presentation,
+    'videos': Video.objects.filter(project=project),
+  })
 
 @login_required(redirect_field_name='')
 def logout(request):
   '''Выход'''
   if (request.method == 'POST'): 
-    val = ''
-    try:
-      val = request.POST.get('Yes')
-    except:
-      val = 'No'
-    if (val == 'Yes'):
+    if request.POST.get('Yes') != None:
       auth.logout(request)
       return redirect('login')
     else:
@@ -114,3 +119,25 @@ def edit_project(request, name):
   else:
     form = ProjectForm(instance=prj)
   return render(request, 'silsite/edit_project.html', {'presentation': prj.presentation, 'form': form})
+
+def delete_project(request, name):
+  if (request.method == 'POST'): 
+    if request.POST.get('Yes') != None:
+      prj = Project.objects.filter(name=name)
+      prj.delete()
+    return redirect('projects')
+  else:
+    return render(request, 'silsite/delete.html', {})
+
+def add_video(request, name):
+  form = VideoForm(data=(request.POST or None))
+  if request.method == 'POST':
+    if form.is_valid():
+      video_wishes = form.cleaned_data['video_wishes']
+      video = form.cleaned_data['video']
+      vd = Video(video_wishes=video_wishes, video=video, project=Project.objects.filter(name=name)[0])
+      vd.save()
+      return redirect(f'/projects/project/{name}/')
+    else:
+      form = VideoForm()
+  return render(request, 'silsite/login.html', {'form': form})

@@ -4,8 +4,12 @@
     <h1>{{ project.name }}</h1>
     {% if  project.teacher.username == username %}
         <a href = "edit"><button id = 'my_buttons' value = 'Edit'>Edit</button></a>
+        <a href = "delete"><button id = 'my_buttons' value = 'Delete'>Delete</button></a>
+        <p><a href = "/media/{{ short_text_name }}" download>Download short text</a></p>
+        <p><a href = "/media/{{ text_name }}" download>Download text</a></p>
+        <p><a href = "/media/{{ presentation_name }}" download>Download presentation</a></p>
     {% endif %}
-    <p>
+    <p>Teacher</p>
     <strong>Username:</strong> {{ project.teacher.username }}<br>
     <strong>Email:</strong> {{ project.teacher.email }}</p>
 {% endblock %}

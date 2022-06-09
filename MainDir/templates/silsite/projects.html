@@ -1,8 +1,14 @@
 {% extends 'silsite/base.html' %}
 
 {% block content %}
-    <h1>Projects</h1>
-    {% for project in projects %}
-        <h2><a href="project/{{ project.name }}">{{ project.name }}</a></h2>
-    {% endfor %}
+    <h1>My projects</h1>
+    {% if projects %}
+        {% for project in projects %}
+            <h2><a href="project/{{ project.name }}/">{{ project.name }}</a></h2>
+            <h3><a href="project/{{ project.name }}/edit/">edit</a></h3>
+            <h3><a href="project/{{ project.name }}/delete/">delete</a></h3>
+        {% endfor %}
+    {% else %}
+        <p> No projects </p>
+    {% endif %}
 {% endblock %}

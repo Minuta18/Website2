@@ -16,3 +16,9 @@ class ProjectForm(ModelForm):
   class Meta:
     model = Project
     fields = ['name']
+
+class VideoForm(ModelForm):
+  '''Форма добавления видео'''
+  class Meta:
+    model = Video
+    fields = ['video_wishes', 'video']
