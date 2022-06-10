@@ -1,7 +1,7 @@
 {% extends 'silsite/base.html' %}
 
 {% block content %}
-    <h1>Edit project</h1>
+    <h1>{{ text_ }}</h1>
     <form enctype="multipart/form-data" method='POST'>{% csrf_token %}
     {{ form.as_p }}
     Short text: <input type='file', name='short_text'><br>

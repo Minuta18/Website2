@@ -4,10 +4,11 @@
     <a href = "{% url 'logout' %}"><button id = 'my_buttons'>Logout</button></a>
     <a href = "{% url 'new_project' %}"><button id = 'my_buttons'>New project</button></a>
     <a href = "{% url 'projects' %}"><button id = 'my_buttons'>My projects</button></a>
+    <h1>All projects</h1>
     {% if projects %}
         {% for project in projects %}
-            <h2><a href="projects/project/{{ project.name }}/">{{ project.name }}</a></h2>
-            <h3><a href="/user/{{ project.teacher}}/">{{ project.teacher.username }}</a></h3>
+            <h2><a href="projects/project/{{ project.id }}/">{{ project.name }}</a></h2>
+            <h4><a href="/user/{{ project.teacher}}/">{{ project.teacher.username }}</a></h4>
         {% endfor %}
     {% else %}
         <p> No projects </p>

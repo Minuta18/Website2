@@ -2,10 +2,5 @@
 
 {% block content %}
     <h1>New project</h1>
-    <form enctype="multipart/form-data" method='POST'>{% csrf_token %}
-    {{ form.as_p }}
-    Short text: <input type='file', name='short_text'><br>
-    Text: <input type='file', name='text'><br>
-    Presentation: <input type='file', name='presentation'><br>
-    <input type='submit' id = 'my_buttons' value = 'Create project'>
+    <p>A <a href="/projects/project/{{ project.id }}/edit/">link</a> for a student</p>
 {% endblock %}

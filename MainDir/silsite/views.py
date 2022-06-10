@@ -45,34 +45,40 @@ def login(request):
 
 @login_required(redirect_field_name='')
 def new_project(request):
-  '''Новый проект'''
-  form = ProjectForm(request.POST or None)
-  if request.method == 'POST':
-    if form.is_valid():
-      prj = Project()
-      prj.name = form.cleaned_data['name']
-      if request.FILES.get('short_text') != None and request.FILES.get('text') != None and request.FILES.get('presentation') != None:
-        prj.short_text = request.FILES['short_text']
-        prj.text = request.FILES['text']
-        prj.presentation = request.FILES['presentation']
-      else:
-        form = ProjectForm(instance=prj)
-        return render(request, 'silsite/new_project.html', {'form': form})
-      prj.teacher = request.user
-      prj.save()
-      return redirect('projects')
-    else:
-      form = ProjectForm()
-  return render(request, 'silsite/new_project.html', {'form': form})
+  prj = Project(teacher=request.user)
+  prj.save()
+  return render(request, 'silsite/new_project.html', {'project': prj})
+
+  # '''Новый проект'''
+  # text_ = 'New project'
+  # form = ProjectForm(request.POST or None)
+  # if request.method == 'POST':
+  #   if form.is_valid():
+  #     prj = Project()
+  #     prj.name = form.cleaned_data['name']
+  #     if request.FILES.get('short_text') != None and request.FILES.get('text') != None and request.FILES.get('presentation') != None:
+  #       prj.short_text = request.FILES['short_text']
+  #       prj.text = request.FILES['text']
+  #       prj.presentation = request.FILES['presentation']
+  #     else:
+  #       form = ProjectForm(instance=prj)
+  #       text_ = 'Please, upload files'
+  #       return render(request, 'silsite/new_project.html', {'form': form, 'text_': text_})
+  #     prj.teacher = request.user
+  #     prj.save()
+  #     return redirect('projects')
+  #   else:
+  #     form = ProjectForm()
+  # return render(request, 'silsite/new_project.html', {'form': form, 'text_': text_})
 
 def projects_view(request):
     projects = Project.objects.filter(teacher=request.user)
     return render(request, 'silsite/projects.html', {'projects': projects})
 
-def project_view(request, name):
+def project_view(request, id):
   '''Просмотр проекта'''
   try:
-    project = Project.objects.filter(name = name)[0]
+    project = Project.objects.filter(id=id)[0]
   except Project.DoesNotExist:
     return render(request, 'silsite/error_404.html')
   if request.method == 'POST':
@@ -106,11 +112,9 @@ def logout(request):
 def error_404(request):
   return render(request, 'silsite/error_404')
 
-@login_required(redirect_field_name='')
-def edit_project(request, name):
-  prj = Project.objects.filter(name=name)[0]
-  if request.user.username != prj.teacher.username:
-    return redirect('project_view')
+def edit_project(request, id):
+  text_ = 'Edit project'
+  prj = Project.objects.filter(id=id)[0]
   form = ProjectForm()
   if request.method == 'POST':
     form = ProjectForm(request.POST, instance=prj)
@@ -122,18 +126,20 @@ def edit_project(request, name):
         prj.presentation = request.FILES['presentation']
       else:
         form = ProjectForm(instance=prj)
-        return render(request, 'silsite/edit_project.html', {'form': form})
-      prj.teacher = request.user
+        text_ = 'Please, upload files'
+        return render(request, 'silsite/edit_project.html', {'form': form, 'text_': text_})
       prj.save()
       return redirect('projects')
+    else:
+      text_ = 'Please, fill the form correctly!'
   else:
     form = ProjectForm(instance=prj)
-  return render(request, 'silsite/edit_project.html', {'presentation': prj.presentation, 'form': form})
+  return render(request, 'silsite/edit_project.html', {'form': form, 'text_': text_})
 
-def delete_project(request, name):
+def delete_project(request, id):
   if (request.method == 'POST'): 
     if request.POST.get('Yes') != None:
-      prj = Project.objects.filter(name=name)
+      prj = Project.objects.filter(id=id)
       for video in Video.objects.filter(project__in=prj):
         video.delete()
       prj.delete()
@@ -141,15 +147,15 @@ def delete_project(request, name):
   else:
     return render(request, 'silsite/delete.html', {})
 
-def add_video(request, name):
+def add_video(request, id):
   form = VideoForm(data=(request.POST or None))
   if request.method == 'POST':
     if form.is_valid():
       video_wishes = form.cleaned_data['video_wishes']
       video = form.cleaned_data['video']
-      vd = Video(video_wishes=video_wishes, video=video, id=(0 if Video.objects.aggregate(Max('id'))['id__max'] == None else Video.objects.aggregate(Max('id'))['id__max'] + 1), project=Project.objects.filter(name=name)[0])
+      vd = Video(video_wishes=video_wishes, video=video, id=(0 if Video.objects.aggregate(Max('id'))['id__max'] == None else Video.objects.aggregate(Max('id'))['id__max'] + 1), project=Project.objects.filter(id=id)[0])
       vd.save()
-      return redirect(f'/projects/project/{name}/')
+      return redirect(f'/projects/project/{id}/')
     else:
       form = VideoForm()
   return render(request, 'silsite/add_video.html', {'form': form})
