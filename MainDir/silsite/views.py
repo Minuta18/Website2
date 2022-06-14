@@ -1,5 +1,4 @@
-from ast import Continue
-from tokenize import Name
+from os import path
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate
 from django.contrib import auth
@@ -14,6 +13,7 @@ from .models import Video
 from base64 import b64decode, b64encode
 from django.db.models import Max
 from django.contrib.auth.models import User
+from django.conf import settings
 
 @login_required(redirect_field_name='')
 def main_page(request):
@@ -127,7 +127,7 @@ def edit_project(request, id):
       else:
         form = ProjectForm(instance=prj)
         text_ = 'Please, upload files'
-        return render(request, 'silsite/edit_project.html', {'form': form, 'text_': text_})
+        return render(request, 'silsite/edit_project.html', {'form': form, 'text_': text_, 'short_text': prj.short_text})
       prj.save()
       return redirect('projects')
     else:
