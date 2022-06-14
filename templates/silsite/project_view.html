@@ -1,0 +1,25 @@
+{% extends 'silsite/base.html' %}
+
+{% block content %}
+    <h1>{{ project.name }}</h1>
+    {% if  project.teacher.username == username %}
+        <a href = "edit"><button id = 'my_buttons' value = 'Edit'>Edit</button></a>
+        <a href = "delete"><button id = 'my_buttons' value = 'Delete'>Delete</button></a>
+        <a href="add"><button id = 'my_buttons'>Add video</button></a>
+    {% endif %}
+    <br>
+    <p><a href = "/media/{{ short_text_name }}" download>Download short text</a></p>
+    <p><a href = "/media/{{ text_name }}" download>Download text</a></p>
+    <p><a href = "/media/{{ presentation_name }}" download>Download presentation</a></p>
+    <br>
+    <strong>Username:</strong> {{ project.teacher.username }}<br>
+    <strong>Email:</strong> {{ project.teacher.email }}</p>
+    {% for video in videos %}
+        <p><a href="{{ video.video }}">Video</a></p>
+        <p> {{ video.video_wishes }} </p>
+        <form method = 'POST'>{% csrf_token %}
+            <input type='submit' name='{{ video.id }}' value='delete' id='my_buttons'>
+        </form>
+        <br>
+    {% endfor %}
+{% endblock %}
