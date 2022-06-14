@@ -124,17 +124,18 @@ def edit_project(request, id):
         prj.short_text = request.FILES['short_text']
         prj.text = request.FILES['text']
         prj.presentation = request.FILES['presentation']
+        print(request.FILES['presentation'])
       else:
         form = ProjectForm(instance=prj)
         text_ = 'Please, upload files'
-        return render(request, 'silsite/edit_project.html', {'form': form, 'text_': text_, 'short_text': prj.short_text})
+        return render(request, 'silsite/edit_project.html', {'form': form, 'text_': text_, 'short_text': prj.short_text.name})
       prj.save()
       return redirect('projects')
     else:
       text_ = 'Please, fill the form correctly!'
   else:
     form = ProjectForm(instance=prj)
-  return render(request, 'silsite/edit_project.html', {'form': form, 'text_': text_})
+  return render(request, 'silsite/edit_project.html', {'form': form, 'text_': text_, 'short_text': prj.short_text.name})
 
 def delete_project(request, id):
   if (request.method == 'POST'): 
