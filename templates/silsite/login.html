@@ -1,4 +1,8 @@
 {% extends 'silsite/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+{% endblock %}
 
 {% block content %}
     <div class="form">

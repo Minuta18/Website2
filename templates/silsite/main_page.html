@@ -1,7 +1,10 @@
 {% extends 'silsite/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+{% endblock %}
 
 {% block content %}
-    <a href = "{% url 'logout' %}"><button>Logout</button></a>
     <a href = "{% url 'new_project' %}"><button>New project</button></a>
     <a href = "{% url 'projects' %}"><button>My projects</button></a>
     {% if projects %}

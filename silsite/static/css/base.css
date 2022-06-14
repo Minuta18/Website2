@@ -10,16 +10,20 @@ body {
     height: 60px;
 }
 
-.header p {
-    color: #FFF;
-    display: inline-block;
-    margin-left: 2%;
-}
-
 .header a {
     color: #FFF;
-    margin-left: 70%;
-    line-height: 60px;
     outline: none;
     text-decoration: none;
+    line-height: 60px;
+}
+
+.logo {
+    float: left;
+    margin-left: 35px;
+}
+
+.button {    
+    float: right;
+    margin-right: 40px;
+    margin-left: 20px;
 }
