@@ -1,0 +1,8 @@
+{% extends 'silsite/base.html' %}
+
+{% block content %}
+    <h1> {{ username }}, вы действительно хотите выйти?</h1>
+    <form method = 'POST'>{% csrf_token %}
+        <input type = 'submit' name = 'Yes' value = 'Да' class="btn btn-primary"> <input type = 'submit' name = 'No' value = 'Нет' class="btn btn-primary">
+    </form>
+{% endblock %}

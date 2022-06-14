@@ -1,0 +1,31 @@
+.content-description {
+    text-align: center;
+}
+
+.project-table {
+    border-spacing: 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    font-size: 0.9em;
+    margin: auto;
+    min-width: 400px;
+    width: 99%;
+}
+
+.project-table thead tr {
+    background-color: #6C7AE0;
+    color: #fff;
+    text-align: left;
+}
+
+.project-table th,
+.project-table td {
+    padding: 12px 15px;
+}
+
+.project-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.project-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}

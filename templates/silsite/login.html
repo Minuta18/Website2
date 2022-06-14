@@ -1,0 +1,16 @@
+{% extends 'silsite/base.html' %}
+
+{% block content %}
+    <div class="login">
+        <p>Вход на сайт</p>
+        <form method='POST'>
+            {% csrf_token %}
+            <label for="id_username" class="form-label">Имя пользователя</label><br>
+            {{ form.username }}<br>
+            <label for="id_passowrd" class="form-label">Пароль</label><br>
+            {{ form.password }}<br>
+            <a href = "{% url 'privacy' %}">Политика конфиденциальности</a>
+            <button type='submit' name='login' id='my_buttons' class="btn btn-primary">Войти</button>
+        </form>
+    </div>
+{% endblock %}

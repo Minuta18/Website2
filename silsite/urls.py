@@ -15,4 +15,5 @@ urlpatterns = [
   path('projects/project/<int:id>/delete/', views.delete_project, name='delete_project'),
   path('projects/project/<int:id>/add/', views.add_video, name='add_video'),
   path('user/<str:name>/', views.user_view, name='user_view'),
+  path('privacy/', views.privacy, name='privacy'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

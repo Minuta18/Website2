@@ -1,19 +1,15 @@
-from os import path
+
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate
 from django.contrib import auth
-from django.contrib.auth import get_user
 from .forms import LoginForm
 from django.contrib.auth.decorators import login_required
 from .forms import ProjectForm
 from .forms import VideoForm
-from django.http import Http404
 from .models import Project
 from .models import Video
-from base64 import b64decode, b64encode
 from django.db.models import Max
 from django.contrib.auth.models import User
-from django.conf import settings
 
 @login_required(redirect_field_name='')
 def main_page(request):
@@ -45,7 +41,7 @@ def login(request):
 
 @login_required(redirect_field_name='')
 def new_project(request):
-  prj = Project(teacher=request.user)
+  prj = Project(teacher=request.user, name='Проект регестрируется')
   prj.save()
   return render(request, 'silsite/new_project.html', {'project': prj})
 
@@ -167,3 +163,6 @@ def user_view(request, name):
     'User': User.objects.filter(username=name)[0],
     'projects': projects  
   })
+
+def privacy(request):
+  return render(request, 'silsite/conf-policy.html')
