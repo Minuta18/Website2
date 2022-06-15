@@ -1,0 +1,9 @@
+{% extends 'silsite/base.html' %}
+
+{% block content %}
+    <h1>{{ text }}</h1>
+    <form method='POST'>{% csrf_token %}
+        {{ form.as_p }}
+        <input type='submit' value='Add video' name='add_video' id = 'my_buttons' class="btn btn-primary">
+    </form>
+{% endblock %}

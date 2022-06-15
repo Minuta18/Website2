@@ -1,9 +1,15 @@
 {% extends 'silsite/base.html' %}
 
 {% block content %}
-  <h1>{{ text }}</h1>
-  <form method='POST'>{% csrf_token %}
-    {{ form.as_p }}
-    <input type='submit' value='Login' name='login' id = 'my_buttons'>
-  </form>
+    <div class="login">
+        <p>{{ text }}</p>
+        <form method='POST'>
+            {% csrf_token %}
+            <label for="id_username" class="form-label">Имя пользователя</label><br>
+            {{ form.username }}<br>
+            <label for="id_passowrd" class="form-label">Пароль</label><br>
+            {{ form.password }}<br>
+            <button type='submit' name='login' id='my_buttons' class="btn btn-primary">Войти</button>
+        </form>
+    </div>
 {% endblock %}

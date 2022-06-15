@@ -1,13 +1,11 @@
 {% extends 'silsite/base.html' %}
 
-{% block content2 %}
-    <a href = "{% url 'new_project' %}">New project</a>
-{% endblock %}
-
 {% block content %}
-
+    <style> h4 {margin: 20px 40% 20px} </style>
+    <h2> User {{ User.username }} </h2>
+    <h3> {{ User.email }} </h3>
+    <p><h4> Ваши проекты </h4>
     <div class="content">
-        <p class="content-description">Все проекты</p>
         <table class="project-table">
             <thead>
                 <tr class="project-table-header">

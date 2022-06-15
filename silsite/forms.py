@@ -15,4 +15,14 @@ class ProjectForm(ModelForm):
   '''Форма создания нового проекта'''
   class Meta:
     model = Project
-    fields = ['name']
+    fields = ['name', 'students']
+    labels = {
+      'name': 'Название проекта',
+      'students': 'Участники проекта'
+    }
+
+class VideoForm(ModelForm):
+  '''Форма добавления видео'''
+  class Meta:
+    model = Video
+    fields = ['video_wishes', 'video']

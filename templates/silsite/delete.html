@@ -1,0 +1,8 @@
+{% extends 'silsite/base.html' %}
+
+{% block content %}
+    <h1>Do you really want to delete project?</h1>
+    <form method = 'POST'>{% csrf_token %}
+        <input type = 'submit' name = 'Yes' value = 'Yes' id = 'my_buttons' class="btn btn-primary"> <input type = 'submit' name = 'No' value = 'No' id = 'my_buttons' class="btn btn-primary">
+    </form>
+{% endblock %}
