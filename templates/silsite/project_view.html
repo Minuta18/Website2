@@ -1,25 +1,42 @@
 {% extends 'silsite/base.html' %}
 
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/user_view.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/project_view.css' %}">
+{% endblock %}
+
 {% block content %}
-    <h1>{{ project.name }}</h1>
-    {% if  project.teacher.username == username %}
-        <a href = "edit"><button id = 'my_buttons' value = 'Edit' class = 'btn btn-primary'><i class="bi bi-pen"></i>Edit</button></a>
-        <a href = "delete"><button id = 'my_buttons' value = 'Delete'>Delete</button></a>
-        <a href="add"><button id = 'my_buttons'>Add video</button></a>
-    {% endif %}
-    <br>
-    <p><a href = "/media/{{ short_text_name }}" download>Download short text</a></p>
-    <p><a href = "/media/{{ text_name }}" download>Download text</a></p>
-    <p><a href = "/media/{{ presentation_name }}" download>Download presentation</a></p>
-    <br>
-    <strong>Username:</strong> {{ project.teacher.username }}<br>
-    <strong>Email:</strong> {{ project.teacher.email }}</p>
-    {% for video in videos %}
-        <p><a href="{{ video.video }}">Video</a></p>
-        <p> {{ video.video_wishes }} </p>
-        <form method = 'POST'>{% csrf_token %}
-            <input type='submit' name='{{ video.id }}' value='delete' id='my_buttons'>
-        </form>
-        <br>
-    {% endfor %}
+<div class="content">
+    <p>Название проекта: {{ project.name }}</p>
+    <p>Подтверждено пользователем: <span>{{ project.teacher.username }}</span></p>
+    <p>Связь с пользователем: <span>{{ project.teacher.email }}</span></p>
+    <div class="btn-group">
+        <div class="dropdown">
+            <a style="background-color: #6C7AE0; color: white;"class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            Скачать
+            </a>
+
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="/media/{{ short_text_name }}" download>Аннотация проекта</a></li>
+                <li><a class="dropdown-item" href="/media/{{ text_name }}" download>Текст проектной работы</a></li>
+                <li><a class="dropdown-item" href="/media/{{ presentation_name }}" download>Презентация</a></li>
+            </ul>
+        </div>
+        {% if project.teacher.username == username %}
+        <div class="dropdown">
+            <a style="background-color: #6C7AE0; color: white; margin-left: 20px;" class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            Изменить
+            </a>
+
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="edit">Основная информация</a></li>
+                <li><a class="dropdown-item" href="add">Добавить видео</a></li>
+                <li><a class="dropdown-item" href="delete">Удалить проект</a></li>
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
