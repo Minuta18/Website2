@@ -12,8 +12,9 @@
     </head>
     <body>
         <div class="header">
-            <a href="/" class="logo">SilaederConf</p>
+            <a href="/" class="logo">SilaederConf</a>
             {% if user.is_authenticated %}
+            <a href = "{% url 'new_project' %}">Добавить проект</a>
             <a href="/logout" class="button">Выйти</a>
             {% endif %}
             <a href="user/{{ user.username }}" class="button">{{ user.username }}</a>

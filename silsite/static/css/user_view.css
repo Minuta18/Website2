@@ -1,0 +1,13 @@
+.content {
+    margin: 10px;
+}
+
+.content span {
+    font-weight: 700;
+}
+
+.content a {
+    color: black;
+    outline: none;
+    text-decoration: none;
+}

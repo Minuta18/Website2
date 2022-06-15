@@ -1,0 +1,16 @@
+<table class="project-table">
+    <thead>
+        <tr class="project-table-header">
+            <td>Название проекта</td>
+            <td>Научный руководитель</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for project in projects %}
+        <tr>
+            <td><a href="/projects/project/{{ project.id }}/">{{ project.name }}</a></td>
+            <td><a href="/user/{{ project.teacher}}/">{{ project.teacher.username }}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -13,6 +13,9 @@
             {{ form.username }}<br>
             <label for="id_passowrd" class="form-label">Пароль</label><br>
             {{ form.password }}<br>
+            {% if error %}
+            <p style="color: red;">{{ error }}</p>
+            {% endif %}
             <button type='submit' name='login' id='my_buttons' class="btn btn-primary">Войти</button>
         </form>
     </div>

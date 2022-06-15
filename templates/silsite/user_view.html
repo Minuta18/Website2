@@ -1,14 +1,19 @@
 {% extends 'silsite/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/project_table.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/user_view.css' %}">
+{% endblock %}
 
 {% block content %}
-    <h2> User {{ User.username }} </h2>
-    <h3> {{ User.email }} </h3>
-    <p><h4> Projects </h4></p>
-    {% if projects %}
-        {% for project in projects %}
-            <h5><a href="/projects/project/{{ project.id }}">{{ project.name }}</a></h5>
-        {% endfor %}
-    {% else %}
-        <p> No projects </p>
-    {% endif %}
+    <div class="content">
+        <p>Имя пользователя: <span>{{ User.username }}</span></p>
+        <p>Связь с пользователем: <span><a href="mailto:{{ User.email }}">{{ User.email }}</a></span></p>
+        <p>Ниже представлены проекты данного пользователя</p>
+        {% if projects %}
+            {% include "silsite\project_table.html" %}
+        {% else %}
+            <p>Проектов нет :(</p>
+        {% endif %}
+    </div>
 {% endblock %}
