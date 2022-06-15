@@ -10,6 +10,12 @@ from .models import Project
 from .models import Video
 from django.db.models import Max
 from django.contrib.auth.models import User
+from django.http import Http404
+
+def checkuser(request, prj):
+  if request.user.username == prj.teacher.username:
+    return True
+  return False
 
 @login_required(redirect_field_name='')
 def main_page(request):
@@ -17,7 +23,7 @@ def main_page(request):
 
 def login(request):
   '''Страница входа'''
-  text = 'Sorry, but you have to login before using site.'
+  text = 'Вам нужно авторизироваться перед использованием.'
   form = LoginForm(data=(request.POST or None))
   if request.method == 'POST':
     if form.is_valid():
@@ -30,18 +36,20 @@ def login(request):
           return redirect('main_page')
         else:
           form = LoginForm()
-          text = 'Sorry, but your account is inactive.'
+          text = 'Извините, но ваш аккаунт неактивен'
       else:
         form = LoginForm()
-        text = 'Invalid username or password.'
+        text = 'Неверное имя пользователя или пароль'
     else:
       form = LoginForm()
-      text = 'Invalid username or password.'
+      text = 'Неверное имя пользователя или пароль'
   return render(request, 'silsite/login.html', {'form': form, 'text': text})
 
 @login_required(redirect_field_name='')
 def new_project(request):
-  prj = Project(teacher=request.user, name='Проект регестрируется')
+  n = Project.objects.aggregate(Max('id'))['id__max']
+  m = 0 if (n == None) else n + 1
+  prj = Project(teacher=request.user, name=f'Проект регестрируется#{m}')
   prj.save()
   return render(request, 'silsite/new_project.html', {'project': prj})
 
@@ -66,10 +74,6 @@ def new_project(request):
   #   else:
   #     form = ProjectForm()
   # return render(request, 'silsite/new_project.html', {'form': form, 'text_': text_})
-
-def projects_view(request):
-    projects = Project.objects.filter(teacher=request.user)
-    return render(request, 'silsite/projects.html', {'projects': projects})
 
 def project_view(request, id):
   '''Просмотр проекта'''
@@ -105,8 +109,11 @@ def logout(request):
   else:
     return render(request, 'silsite/logout.html', {'username': request.user.username})
 
-def error_404(request):
-  return render(request, 'silsite/error_404')
+def error_404(request, exception):
+  return render(request, 'silsite/404.html', status=404)
+
+def error_500(request):
+  return render(request, 'silsite/404.html', status=500)
 
 def edit_project(request, id):
   text_ = 'Edit project'
@@ -116,6 +123,7 @@ def edit_project(request, id):
     form = ProjectForm(request.POST, instance=prj)
     if form.is_valid():
       prj.name = form.cleaned_data['name']
+      prj.students = form.cleaned_data['students']
       if request.FILES.get('short_text') != None and request.FILES.get('text') != None and request.FILES.get('presentation') != None:
         prj.short_text = request.FILES['short_text']
         prj.text = request.FILES['text']
@@ -126,7 +134,7 @@ def edit_project(request, id):
         text_ = 'Please, upload files'
         return render(request, 'silsite/edit_project.html', {'form': form, 'text_': text_, 'short_text': prj.short_text.name})
       prj.save()
-      return redirect('projects')
+      return redirect('main_page')
     else:
       text_ = 'Please, fill the form correctly!'
   else:
@@ -140,7 +148,7 @@ def delete_project(request, id):
       for video in Video.objects.filter(project__in=prj):
         video.delete()
       prj.delete()
-    return redirect('projects')
+    return redirect('main_page')
   else:
     return render(request, 'silsite/delete.html', {})
 

@@ -11,19 +11,27 @@ body {
 
 .header {
     background-color: #6C7AE0;
-    height: 60px;
-}
-
-.header p {
-    color: #FFF;
-    display: inline-block;
-    margin-left: 2%;
+    overflow: hidden;
 }
 
 .header a {
+    display: flex;
+    float: left;
     color: #FFF;
-    margin-left: 70%;
-    line-height: 60px;
-    outline: none;
+    text-align: center;
+    padding: 14px 16px;
     text-decoration: none;
+    margin-left: 2%;
+    margin-top: 1%;
+}
+
+.header > #temp_user {
+    display: flex;
+    float: right;
+    color: #FFF;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    margin-right: 2%;
+    margin-top: 0%;
 }

@@ -3,9 +3,9 @@
 {% block content %}
     <h1>{{ project.name }}</h1>
     {% if  project.teacher.username == username %}
-        <a href = "edit"><button id = 'my_buttons' value = 'Edit' class = 'btn btn-primary'><i class="bi bi-pen"></i>Edit</button></a>
-        <a href = "delete"><button id = 'my_buttons' value = 'Delete'>Delete</button></a>
-        <a href="add"><button id = 'my_buttons'>Add video</button></a>
+        <a href = "edit"><button id = 'my_buttons' value = 'Edit' class = 'btn btn-primary'>Edit</button></a>
+        <a href = "delete"><button id = 'my_buttons' value = 'Delete' class = 'btn btn-primary'>Delete</button></a>
+        <a href="add"><button class = 'btn btn-primary'>Add video</button></a>
     {% endif %}
     <br>
     <p><a href = "/media/{{ short_text_name }}" download>Download short text</a></p>
@@ -14,12 +14,22 @@
     <br>
     <strong>Username:</strong> {{ project.teacher.username }}<br>
     <strong>Email:</strong> {{ project.teacher.email }}</p>
-    {% for video in videos %}
+    {% comment %} {% for video in videos %}
         <p><a href="{{ video.video }}">Video</a></p>
         <p> {{ video.video_wishes }} </p>
-        <form method = 'POST'>{% csrf_token %}
-            <input type='submit' name='{{ video.id }}' value='delete' id='my_buttons'>
-        </form>
+        {% if  project.teacher.username == username %}
+            <form method = 'POST'>{% csrf_token %}
+                <input type='submit' name='{{ video.id }}' value='delete' id='my_buttons'>
+            </form>
+        {% endif %}
         <br>
+    {% endfor %} {% endcomment %}
+    {% for video in videos %}
+        <div class="card">
+            <div class="container">
+                <h4><a href="{{ video.video }}">Посмотреть</a></h4>
+                <p>{{ video.video_wishes }}</p>
+            </div>
+        </div> 
     {% endfor %}
 {% endblock %}

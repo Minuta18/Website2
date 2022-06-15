@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="login">
-        <p>Вход на сайт</p>
+        <p>{{ text }}</p>
         <form method='POST'>
             {% csrf_token %}
             <label for="id_username" class="form-label">Имя пользователя</label><br>
