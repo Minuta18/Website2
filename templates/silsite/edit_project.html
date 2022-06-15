@@ -1,0 +1,11 @@
+{% extends 'silsite/base.html' %}
+
+{% block content %}
+    <h1>Edit project</h1>
+    <form enctype="multipart/form-data" method='POST'>{% csrf_token %}
+    {{ form.as_p }}
+    Short text: <input type='file' name='short_text'><br>
+    Text: <input type='file' name='text'><br>
+    Presentation: <input type='file' name='presentation'><br>
+    <input type='submit' id = 'my_buttons' value = 'Save'>
+{% endblock %}

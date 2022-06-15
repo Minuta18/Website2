@@ -1,0 +1,11 @@
+{% extends 'silsite/base.html' %}
+
+{% block content %}
+    <h1>{{ project.name }}</h1>
+    {% if  project.teacher.username == username %}
+        <a href = "edit"><button id = 'my_buttons' value = 'Edit'>Edit</button></a>
+    {% endif %}
+    <p>
+    <strong>Username:</strong> {{ project.teacher.username }}<br>
+    <strong>Email:</strong> {{ project.teacher.email }}</p>
+{% endblock %}

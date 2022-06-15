@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <title>Silaeder conf</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    </head>
+    <body>
+         <a href = "{% url 'main_page' %}">Silaeder conf</a>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>
